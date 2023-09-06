@@ -1,0 +1,9 @@
+[
+  { "name": "Abhishek", "age": 23, "sex": "male" },
+  { "name": "Annapurna", "age": 23, "sex": "female" },
+  { "name": "Aditi", "age": 22, "sex": "female" },
+  { "name": "Arvind", "age": 25, "sex": "male" },
+  { "name": "Raj", "age": 28, "sex": "male" },
+  { "name": "Papu", "age": 25, "sex": "male" },
+  { "name": "Rapu", "age": 28, "sex": "male" }
+]
