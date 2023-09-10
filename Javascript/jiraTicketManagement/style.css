@@ -20,6 +20,12 @@ body{
 .green{
     background-color: green;
 }
+.gray{
+    background-color: gray;
+}
+.pink{
+    background-color: rgb(255, 48, 82);
+}
 .navbar{
     height: 6rem;
     background-color: black;
@@ -79,7 +85,6 @@ body{
 .modal{
     height: 40vh;
     width: 40vw;
-    background-color: gray;
     position: absolute;
     z-index: 1000;
     top: 30vh;
@@ -95,12 +100,15 @@ body{
 .text-container{
     width: 75%;
     height: 100%;
-    background-color: goldenrod;
     padding: 2rem;
     font-size: 1.5rem;
+    color: white;
     border: none;
     outline: none;
     resize: none;
+}
+.text-container::placeholder{
+    color: whitesmoke;
 }
 .priority-chooser{
     width: 25%;
@@ -158,7 +166,6 @@ body{
 .card-status{
     width: 100%;
     height: 1rem;
-    background-color: gray;
 }
 .card-details{
     padding: 0.5rem;
