@@ -15,14 +15,15 @@
     <div class="main">
         <div class="navbar">
             <div class="priority-btn-container">
-                <div class="priority-btn blue"></div>
-                <div class="priority-btn orange"></div>
-                <div class="priority-btn green"></div>
-                <div class="priority-btn red"></div>
+                <div class="priority-btn blue" data-color="blue"></div>
+                <div class="priority-btn orange" data-color="orange"></div>
+                <div class="priority-btn green" data-color="green"></div>
+                <div class="priority-btn red" data-color="red"></div>
+                <div class="priority-btn black" data-color="black"></div>
             </div>
             <div class="action-btn-container">
                 <div class="action-btn orange" id="AddBtn"><i class="fa-solid fa-circle-plus" style="padding-right: 5px;"></i>Add</div>
-                <div class="action-btn red"><i class="fa-solid fa-trash" style="padding-right: 5px;"></i>Destroy</div>
+                <div class="action-btn red" id="DestroyBtn"><i class="fa-solid fa-trash" style="padding-right: 5px;"></i>Destroy</div>
             </div>
             <div class="logo">
                 <h1>JIRA Ticket Management</h1>
@@ -48,7 +49,7 @@
             <textarea id="textareaUpdate" class="text-container pink"
                 placeholder="Enter update bug details.."></textarea>
             <div class="priority-chooser">
-                <div class="priority-chooser-btn blue border-btn" button-clr="blue"></div>
+                <div class="priority-chooser-btn blue" button-clr="blue"></div>
                 <div class="priority-chooser-btn orange" button-clr="orange"></div>
                 <div class="priority-chooser-btn green" button-clr="green"></div>
                 <div class="priority-chooser-btn red" button-clr="red"></div>
