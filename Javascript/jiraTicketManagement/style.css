@@ -233,3 +233,36 @@ body{
 .card-lock > svg:active{
     transform: scale(0.6);
 }
+@media screen and (max-width:750px) {
+    .navbar{
+        height: auto;
+        flex-direction: column-reverse;
+    }
+    .priority-btn-container{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .logo{
+        padding-left: 0;
+    }
+    .card{
+        width: 42.5%;
+    }
+}
+@media screen and (max-width:500px) {
+    .navbar{
+        height: auto;
+        flex-direction: column-reverse;
+    }
+    .priority-btn-container{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .logo{
+        padding-left: 0;
+    }
+    .card{
+        width: 100%;
+        margin-right: 2rem;
+    }
+}
