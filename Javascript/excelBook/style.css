@@ -1,0 +1,184 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.header{
+    height: 2.5rem;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    font-weight: 400;
+    color: white;
+    border-bottom: 1px solid white;
+    font-weight: 600;
+    font-family: monospace;
+}
+.navbar{
+    height: 2.5rem;
+    background-color: green;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+.navbar>span{
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: monospace;
+}
+.utility{
+    height: 2.5rem;
+    background-color: wheat;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+}
+.utility>span{
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+.utility>select{
+    padding: 0.2rem;
+    margin-left: 0.35rem;
+    margin-right: 0.35rem;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+.function-bar{
+    height: 2.5rem;
+    background-color: rgb(169, 169, 169);
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+}
+.function-bar>span{
+    padding: 0.5rem;
+    cursor: none;
+    font-size: 1.3rem;
+    width: 3rem;
+    text-align: center;
+}
+.function-bar>input{
+    border: none;
+    outline: none;
+    padding: 0.35rem;
+}
+#address-bar{
+    width: 6rem;
+}
+#formula-bar{
+    width: calc(100vw - 6rem - 3rem - 3rem);
+}
+.cells-container{
+    height: calc(100vh - 12.5rem);
+    position: relative;
+    overflow: auto;
+    background-color: wheat;
+}
+.dummy-box{
+    position: sticky;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgb(169, 169, 169);
+}
+.row-bar{
+    position: sticky;
+    z-index: 3;
+    width: 1.5rem;
+    left: 0;
+    top: 0;
+}
+.row-cell{
+    height: 1.5rem;
+    width: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: gainsboro;
+    border: 1px solid gray;
+}
+.col-bar{
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    width: calc(100% - 1.5rem);
+    white-space: nowrap;
+}
+.col-address{
+    position: sticky;
+    top:0;
+}
+.col-cells{
+    display: flex;
+    flex-direction: row;
+}
+.col-cell{
+    height: 1.5rem!important;
+    width: 3.5rem!important;
+    display: inline-block;
+    text-align: center;
+    background-color: gainsboro;
+    border: 1px solid gray;
+}
+.col-cell>input{
+    height: 1.5rem!important;
+    width: 3.5rem!important;
+    outline: none;
+    background-color: gainsboro;
+    border: 1px solid gray;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number]{
+    background-color:gainsboro;
+    text-align: end;
+}input[type=number]:focus{
+    background-color: green;
+    color: white;
+    font-weight: 600;
+}
+.sheets-container{
+    position: absolute;
+    width: 100%;
+    height: 2.5rem;
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    gap: 1rem;
+}
+.sheets-container>span{
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+}
+.sheets{
+    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}   
+.sheet{
+    font-weight: 600;
+    font-family: monospace;
+    cursor: pointer;
+    color: white;
+}
+.sheet-active{
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: white;
+}
