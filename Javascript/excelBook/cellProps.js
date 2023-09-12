@@ -1,6 +1,8 @@
 let addressBarVal = document.querySelector('#address-bar');
 let cells = document.querySelectorAll('.col-cell>input');
-
+let copySelector = document.querySelector(".copySelector");
+let cutSelector = document.querySelector(".cutSelector");
+let pasteSelector = document.querySelector(".pasteSelector");
 let boldSelector = document.querySelector(".boldSelector");
 let italicSelector = document.querySelector(".italicSelector");
 let underlineSelector = document.querySelector(".underlineSelector");
@@ -12,6 +14,9 @@ let bgColorSelector = document.querySelector(".bgColorSelector").nextElementSibl
 let leftAlign = alignSelector[0];
 let justifyAlign = alignSelector[1];
 let rightAlign = alignSelector[2];
+
+let activeBgColor = "green";
+let inActiveBgColor = "transparent";
 
 let rowId = 0;
 let colId = 0;
@@ -50,7 +55,7 @@ cells.forEach((cell)=>{
         rowId = Number(address.slice(1))-1;
         colId = Number(address.charCodeAt(0))-65;
         cellCont = cell; 
-        textEditor(e);
+        textEditor(e.target.value);
         activeCellOperation(cell,rowId,colId);
     });
     cell.addEventListener('focus',(e)=>{
@@ -58,16 +63,16 @@ cells.forEach((cell)=>{
         rowId = Number(address.slice(1))-1;
         colId = Number(address.charCodeAt(0))-65;
         cellCont = cell; 
-        textEditor(e);
-        // console.log(rowId,colId);
+        changeActivityBtn(rowId,colId);
+        textEditor(e.target.value);
     });
     let rid = cell.getAttribute("rowId");
     let cid = cell.getAttribute("colId");
     activeCellOperation(cell,rid,cid);
 });
 
-function textEditor(e){
-    let textVal = e.target.value;
+function textEditor(text){
+    let textVal = text;
     let currVal = storageDB[rowId][colId];
     currVal.text = textVal;
     refreshPage();
@@ -77,7 +82,7 @@ function activeCellOperation(cell,rowId,colId){
     let currentValues = storageDB[rowId][colId];
     cell.value = (currentValues.text);
     cell.style.fontWeight = (currentValues.bold) ? "bold" : "normal";
-    cell.style.fontStyle = (currentValues.italic) ? "italic" : "none";
+    cell.style.fontStyle = (currentValues.italic) ? "italic" : "normal";
     cell.style.textDecoration = (currentValues.underline) ? "underline" : "none";
     cell.style.fontSize = (currentValues.fontSize)+"px";
     cell.style.color = (currentValues.fontColor);
@@ -111,6 +116,7 @@ function activeCellOperation(cell,rowId,colId){
         default:
             break;
     }
+    // console.log("loading..");
 }
 
 function refreshPage(){
@@ -119,10 +125,74 @@ function refreshPage(){
     storageDB = JSON.parse(freshData);
 }
 
+function changeActivityBtn(rid,cid){
+    let currVal = storageDB[rid][cid];
+    boldSelector.style.backgroundColor = (currVal.bold) ? activeBgColor : inActiveBgColor;
+    italicSelector.style.backgroundColor = (currVal.italic) ? activeBgColor : inActiveBgColor;
+    underlineSelector.style.backgroundColor = (currVal.underline) ? activeBgColor : inActiveBgColor;
+    switch (currVal.fontFamily){
+        case "font-1":
+            fontFamilySelector.value = "font-1";
+            break;
+        case "font-2":
+            fontFamilySelector.value = "font-2";
+            break;
+        case "font-3":
+            fontFamilySelector.value = "font-3";
+            break;
+        case "font-4":
+            fontFamilySelector.value = "font-4";
+            break;
+        default:
+            break;    
+    }
+    switch (currVal.fontSize.toString()){
+        case "12":
+            fontSizeSelector.value = "12";
+            break;
+        case "14":
+            fontSizeSelector.value = "14";
+            break;
+        case "16":
+            fontSizeSelector.value = "16";
+            break;
+        case "18":
+            fontSizeSelector.value = "18";
+            break;
+        case "20":
+            fontSizeSelector.value = "20";
+            break;
+        default:
+            break;    
+    }
+    switch (currVal.alignment) {
+        case "left":
+            leftAlign.style.backgroundColor = activeBgColor;
+            justifyAlign.style.backgroundColor = inActiveBgColor;
+            rightAlign.style.backgroundColor = inActiveBgColor;
+            break;
+        case "justify":
+            leftAlign.style.backgroundColor = inActiveBgColor;
+            justifyAlign.style.backgroundColor = activeBgColor;
+            rightAlign.style.backgroundColor = inActiveBgColor;
+            break;
+        case "right":
+            leftAlign.style.backgroundColor = inActiveBgColor;
+            justifyAlign.style.backgroundColor = inActiveBgColor;
+            rightAlign.style.backgroundColor = activeBgColor;
+            break;
+        default:
+            break;
+    }
+    textColor.parentNode.style.color = (currVal.fontColor=="transparent")?"black":currVal.fontColor;
+    bgColor.parentNode.style.color = (currVal.bgColor=="transparent")?"black":currVal.bgColor;
+}
+
 boldSelector.addEventListener('click',(e)=>{
     boldValue = storageDB[rowId][colId];
     boldValue.bold = !boldValue.bold;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -130,6 +200,7 @@ italicSelector.addEventListener('click',(e)=>{
     italicValue = storageDB[rowId][colId];
     italicValue.italic = !italicValue.italic;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -137,6 +208,7 @@ underlineSelector.addEventListener('click',(e)=>{
     ulValue = storageDB[rowId][colId];
     ulValue.underline = !ulValue.underline;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -144,6 +216,7 @@ leftAlign.addEventListener('click',(e)=>{
     alignValue = storageDB[rowId][colId];
     alignValue.alignment = "left";
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -151,6 +224,7 @@ justifyAlign.addEventListener('click',(e)=>{
     alignValue = storageDB[rowId][colId];
     alignValue.alignment = "justify";
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -158,6 +232,7 @@ rightAlign.addEventListener('click',(e)=>{
     alignValue = storageDB[rowId][colId];
     alignValue.alignment = "right";
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -165,6 +240,7 @@ fontColorSelector.addEventListener('input',(e)=>{
     fontColorValue = storageDB[rowId][colId];
     fontColorValue.fontColor = e.target.value;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -172,6 +248,7 @@ bgColorSelector.addEventListener('input',(e)=>{
     bgColorValue = storageDB[rowId][colId];
     bgColorValue.bgColor = e.target.value;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -179,6 +256,7 @@ fontSizeSelector.addEventListener('input',(e)=>{
     fontSizeValue = storageDB[rowId][colId];
     fontSizeValue.fontSize = e.target.value;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
 
@@ -186,5 +264,31 @@ fontFamilySelector.addEventListener('input',(e)=>{
     fontFamilyValue = storageDB[rowId][colId];
     fontFamilyValue.fontFamily = e.target.value;
     activeCellOperation(cellCont,rowId,colId);
+    changeActivityBtn(rowId,colId);
     refreshPage();
 });
+
+copySelector.addEventListener('click',()=>{
+    let copyText = cellCont.value;
+    navigator.clipboard.writeText(copyText);
+    console.log("Text is Copied!");
+});
+
+cutSelector.addEventListener('click',()=>{
+    let cutText = cellCont.value;
+    cellCont.value = "";
+    navigator.clipboard.writeText(cutText);
+    console.log("Text is Cut!");
+    textEditor("");
+});
+
+pasteSelector.addEventListener('click',async()=>{
+    let text = await navigator.clipboard.readText();
+    let fullText = cellCont.value + " " + text;
+    cellCont.value = fullText.trim();
+    console.log("Text is pasted!");
+    textEditor(cellCont.value.toString());
+});
+
+let firstCell = document.querySelector('.col-cell>input');
+firstCell.focus();

@@ -49,7 +49,8 @@ function addressSelector(cell,i,j){
     input.addEventListener('click',(e)=>{
         addressBar.value = (String.fromCharCode(65+j).toUpperCase() + (i+1));
     });
+    input.addEventListener('focus',(e)=>{
+        addressBar.value = (String.fromCharCode(65+j).toUpperCase() + (i+1));
+        firstCell.focus
+    });
 }
-
-let firstCell = document.querySelector('.col-cell>input');
-firstCell.click();

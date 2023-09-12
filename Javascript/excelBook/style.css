@@ -39,9 +39,14 @@ body{
     padding-left: 1rem;
 }
 .utility span{
-    padding: 0.5rem;
+    padding: 0.2rem;
+    margin: 0.3rem;
     cursor: pointer;
     font-size: 1.3rem;
+    border-radius: 5px;
+}
+.utility span:hover{
+    background-color: green;
 }
 .font-color-cont{
     position: relative;
@@ -152,14 +157,14 @@ body{
 }
 .col-cell{
     height: 1.5rem!important;
-    width: 4.5rem!important;
+    width: 9rem!important;
     display: inline-block;
     text-align: center;
     background-color: gainsboro;
 }
 .col-cell>input{
     height: 1.5rem!important;
-    width: 4.5rem!important;
+    width: 9rem!important;
     outline: none;
     background-color: transparent;
     border: 1px solid gray;
