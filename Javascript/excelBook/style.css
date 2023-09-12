@@ -38,10 +38,34 @@ body{
     align-items: center;
     padding-left: 1rem;
 }
-.utility>span{
+.utility span{
     padding: 0.5rem;
     cursor: pointer;
     font-size: 1.3rem;
+}
+.font-color-cont{
+    position: relative;
+}
+.font-bgcolor-cont{
+    position: relative;
+}
+.text-font-color{
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.bg-font-color{
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
 .utility>select{
     padding: 0.2rem;
@@ -95,6 +119,7 @@ body{
     position: sticky;
     z-index: 3;
     width: 1.5rem;
+    background-color: gray;
     left: 0;
     top: 0;
 }
@@ -118,24 +143,27 @@ body{
     position: sticky;
     top:0;
 }
+.col-address>.col-cell{
+    border: 1px solid gray;
+}
 .col-cells{
     display: flex;
     flex-direction: row;
 }
 .col-cell{
     height: 1.5rem!important;
-    width: 3.5rem!important;
+    width: 4.5rem!important;
     display: inline-block;
     text-align: center;
     background-color: gainsboro;
-    border: 1px solid gray;
 }
 .col-cell>input{
     height: 1.5rem!important;
-    width: 3.5rem!important;
+    width: 4.5rem!important;
     outline: none;
-    background-color: gainsboro;
+    background-color: transparent;
     border: 1px solid gray;
+    border-collapse: collapse;
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 

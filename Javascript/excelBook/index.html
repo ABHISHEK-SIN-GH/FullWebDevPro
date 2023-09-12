@@ -31,43 +31,49 @@
         <span class="material-symbols-outlined">
             content_paste
         </span>
-        <select name="font-family">
-            <option value="font1" style="font-family: 'Courier New', Courier, monospace;">Courier New</option>
-            <option value="font2" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Lucida Sans</option>
-            <option value="font3" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</option>
-            <option value="font4" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Segoe Ui</option>
+        <select name="font-family" class="fontFamilySelector">
+            <option value="font-1" style="font-family: 'Courier New', Courier, monospace;">Courier New</option>
+            <option value="font-2" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Lucida Sans</option>
+            <option value="font-3" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</option>
+            <option value="font-4" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Segoe Ui</option>
         </select>
-        <select name="font-size">
+        <select name="font-size" class="fontSizeSelector">
             <option value="12">12</option>
             <option value="14">14</option>
             <option value="16">16</option>
             <option value="18">18</option>
             <option value="20">20</option>
         </select>
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined boldSelector">
             format_bold
         </span>
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined italicSelector">
             format_italic
         </span>
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined underlineSelector">
             format_underlined
         </span>
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined alignmentSelector">
             format_align_right
         </span>
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined alignmentSelector">
             format_align_justify
         </span>
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined alignmentSelector">
             format_align_left
         </span>
-        <span class="material-symbols-outlined">
-            border_color
-        </span>
-        <span class="material-symbols-outlined">
-            format_color_fill
-        </span>
+        <div class="font-color-cont">
+            <span class="material-symbols-outlined fontColorSelector">
+                border_color
+            </span>
+            <input type="color" class="text-font-color">
+        </div>
+        <div class="font-bgcolor-cont">
+            <span class="material-symbols-outlined bgColorSelector">
+                format_color_fill
+            </span>
+            <input type="color" class="bg-font-color">
+        </div>
     </div>
     <div class="function-bar">
         <input type="text" readonly name="address" id="address-bar">
@@ -99,7 +105,8 @@
             </span>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script src="./grid.js"></script>
+    <script src="./cellProps.js"></script>
 </body>
 
 </html>
