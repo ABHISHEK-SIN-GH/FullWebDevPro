@@ -1,4 +1,4 @@
-let addressBarVal = document.querySelector('#address-bar');
+let formulaBar = document.querySelector('#formula-bar');
 let cells = document.querySelectorAll('.col-cell>input');
 let copySelector = document.querySelector(".copySelector");
 let cutSelector = document.querySelector(".cutSelector");
@@ -20,6 +20,7 @@ let inActiveBgColor = "transparent";
 
 let rowId = 0;
 let colId = 0;
+
 let cellCont = "";
 let storageDB = [];
 
@@ -38,7 +39,9 @@ if(!storageDBLocalDB){
                 fontFamily:"font-1",
                 fontSize:12,
                 fontColor:"black",
-                bgColor:"transparent"
+                bgColor:"transparent",
+                formula:"",
+                children:[]
             }
             rowDB.push(cellProp);
         }
@@ -51,15 +54,16 @@ if(!storageDBLocalDB){
 
 cells.forEach((cell)=>{
     cell.addEventListener('input',(e)=>{      
-        let address = addressBarVal.value;
+        let address = addressBar.value;
         rowId = Number(address.slice(1))-1;
         colId = Number(address.charCodeAt(0))-65;
         cellCont = cell; 
+        updateChildren(address);
         textEditor(e.target.value);
         activeCellOperation(cell,rowId,colId);
     });
     cell.addEventListener('focus',(e)=>{
-        let address = addressBarVal.value;
+        let address = addressBar.value;
         rowId = Number(address.slice(1))-1;
         colId = Number(address.charCodeAt(0))-65;
         cellCont = cell; 
@@ -91,8 +95,8 @@ function activeCellOperation(cell,rowId,colId){
         case "left":
             cell.style.textAlign = "left";
             break;
-        case "justify":
-            cell.style.textAlign = "justify";
+        case "center":
+            cell.style.textAlign = "center";
             break;
         case "right":
             cell.style.textAlign = "right";
@@ -171,7 +175,7 @@ function changeActivityBtn(rid,cid){
             justifyAlign.style.backgroundColor = inActiveBgColor;
             rightAlign.style.backgroundColor = inActiveBgColor;
             break;
-        case "justify":
+        case "center":
             leftAlign.style.backgroundColor = inActiveBgColor;
             justifyAlign.style.backgroundColor = activeBgColor;
             rightAlign.style.backgroundColor = inActiveBgColor;
@@ -186,6 +190,7 @@ function changeActivityBtn(rid,cid){
     }
     textColor.parentNode.style.color = (currVal.fontColor=="transparent")?"black":currVal.fontColor;
     bgColor.parentNode.style.color = (currVal.bgColor=="transparent")?"black":currVal.bgColor;
+    formulaBar.value = (currVal.formula);
 }
 
 boldSelector.addEventListener('click',(e)=>{
@@ -222,7 +227,7 @@ leftAlign.addEventListener('click',(e)=>{
 
 justifyAlign.addEventListener('click',(e)=>{
     alignValue = storageDB[rowId][colId];
-    alignValue.alignment = "justify";
+    alignValue.alignment = "center";
     activeCellOperation(cellCont,rowId,colId);
     changeActivityBtn(rowId,colId);
     refreshPage();
@@ -289,6 +294,14 @@ pasteSelector.addEventListener('click',async()=>{
     console.log("Text is pasted!");
     textEditor(cellCont.value.toString());
 });
+
+function getActiveCellAndProps(address){
+    let rowId = Number(address.slice(1))-1;
+    let colId = Number(address.charCodeAt(0))-65;
+    let cell = document.querySelector(`input[rowId="${rowId}"][colId="${colId}"]`)
+    let cellProps = storageDB[rowId][colId];
+    return [cell,cellProps];
+}
 
 let firstCell = document.querySelector('.col-cell>input');
 firstCell.focus();
