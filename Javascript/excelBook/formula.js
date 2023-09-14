@@ -10,7 +10,7 @@ formulaBar.addEventListener('keydown',(e)=>{
         cell.value = evaluatedValue;
         cellProps.text = evaluatedValue;
         cellProps.formula = inputFormula;
-        refreshPage();
+        activeCellOperation(address);
     }
 });
 
@@ -50,7 +50,6 @@ function removeChildFromParent(formula){
         if(element.charCodeAt(0) >= 65 && element.charCodeAt(0)<= 90) {
             let [parentCell,parentCellProps] = getActiveCellAndProps(element);
             parentCellProps.children.splice(parentCellProps.children.indexOf(addressBar.value),1);
-            console.log(parentCellProps.children);
         }
     });
 }

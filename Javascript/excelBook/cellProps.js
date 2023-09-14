@@ -1,5 +1,5 @@
 let formulaBar = document.querySelector('#formula-bar');
-let cells = document.querySelectorAll('.col-cell>input');
+
 let copySelector = document.querySelector(".copySelector");
 let cutSelector = document.querySelector(".cutSelector");
 let pasteSelector = document.querySelector(".pasteSelector");
@@ -18,15 +18,60 @@ let rightAlign = alignSelector[2];
 let activeBgColor = "green";
 let inActiveBgColor = "transparent";
 
-let rowId = 0;
-let colId = 0;
+let sheetsCont = document.querySelector('.sheets');
+let addSheet = document.querySelector('#addSheet');
+let sheet1 = document.querySelector('#sheet-1');
 
-let cellCont = "";
+let currentActiveSheet = 0;
 let storageDB = [];
+let currentSheetDB = [];
 
-let storageDBLocalDB = localStorage.getItem("storageDB");
+let storageDBLocalDB = localStorage.getItem("storageDatabase");
+
 if(!storageDBLocalDB){
-    storageDB = []; 
+    storageDB = addNewSheetDB();
+    currentSheetDB = storageDB[0];
+}else{
+    storageDB = JSON.parse(storageDBLocalDB);
+    if(storageDB.length>1){
+        getAllSheetsLoad();
+    }
+}
+            
+clickFirstCell();
+implementFeaturesToCells();
+
+function getAllSheetsLoad(){
+    sheetsCont.removeChild(sheet1);
+    for (let index = 1; index <= storageDB.length; index++) {
+        let sheetLink = document.createElement('span');
+        sheetLink.setAttribute("class","sheet");
+        sheetLink.setAttribute("id",`sheet-${index}`);
+        sheetLink.setAttribute("sheet-number",`${index}`);
+        sheetLink.innerText = `Sheet-${index}`;
+        sheetLink.addEventListener('click',()=>{activeSheet(sheetLink)});
+        sheetLink.addEventListener('contextmenu',(e)=>{ 
+            e.preventDefault();
+            if(confirm('Are really want to delete this sheet!')){
+                removeSheet(sheetLink);
+            }
+        });
+        sheetsCont.appendChild(sheetLink);
+        if(index==1){
+            activeSheet(sheetLink);
+        }
+    }
+}
+
+
+function updateDatabase(){
+    localStorage.setItem("storageDatabase",JSON.stringify(storageDB));
+    storageDB = JSON.parse(localStorage.getItem("storageDatabase"));
+    return storageDB;
+}
+
+function createSheetDB(){
+    let sheetDB = []
     for (let i = 0; i < numRows; i++) {
         let rowDB = [];
         for(let j = 0; j < numCols; j++){
@@ -45,53 +90,40 @@ if(!storageDBLocalDB){
             }
             rowDB.push(cellProp);
         }
-        storageDB.push(rowDB);
-        localStorage.setItem("storageDB",JSON.stringify(storageDB));
+        sheetDB.push(rowDB);
     }
-}else{
-    storageDB = JSON.parse(storageDBLocalDB);
+    return sheetDB;
 }
 
-cells.forEach((cell)=>{
-    cell.addEventListener('input',(e)=>{      
-        let address = addressBar.value;
-        rowId = Number(address.slice(1))-1;
-        colId = Number(address.charCodeAt(0))-65;
-        cellCont = cell; 
-        updateChildren(address);
-        textEditor(e.target.value);
-        activeCellOperation(cell,rowId,colId);
-    });
-    cell.addEventListener('focus',(e)=>{
-        let address = addressBar.value;
-        rowId = Number(address.slice(1))-1;
-        colId = Number(address.charCodeAt(0))-65;
-        cellCont = cell; 
-        changeActivityBtn(rowId,colId);
-        textEditor(e.target.value);
-    });
-    let rid = cell.getAttribute("rowId");
-    let cid = cell.getAttribute("colId");
-    activeCellOperation(cell,rid,cid);
-});
-
-function textEditor(text){
-    let textVal = text;
-    let currVal = storageDB[rowId][colId];
-    currVal.text = textVal;
-    refreshPage();
+function addNewSheetDB(){
+    let newSheet = createSheetDB();
+    storageDB.push(newSheet);
+    return updateDatabase();
 }
 
-function activeCellOperation(cell,rowId,colId){
-    let currentValues = storageDB[rowId][colId];
-    cell.value = (currentValues.text);
-    cell.style.fontWeight = (currentValues.bold) ? "bold" : "normal";
-    cell.style.fontStyle = (currentValues.italic) ? "italic" : "normal";
-    cell.style.textDecoration = (currentValues.underline) ? "underline" : "none";
-    cell.style.fontSize = (currentValues.fontSize)+"px";
-    cell.style.color = (currentValues.fontColor);
-    cell.style.backgroundColor = (currentValues.bgColor);
-    switch (currentValues.alignment) {
+function clickFirstCell(){
+    let firstCell = document.querySelector('.col-cell>input');
+    firstCell.focus();
+}
+
+function getActiveCellAndProps(address){
+    let rowId = Number(address.slice(1))-1;
+    let colId = Number(address.charCodeAt(0))-65;
+    let cell = document.querySelector(`input[rowId="${rowId}"][colId="${colId}"]`)
+    let cellProps = currentSheetDB[rowId][colId];
+    return [cell,cellProps];
+}
+
+function activeCellOperation(address){
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cell.value = (cellProps.text);
+    cell.style.fontWeight = (cellProps.bold) ? "bold" : "normal";
+    cell.style.fontStyle = (cellProps.italic) ? "italic" : "normal";
+    cell.style.textDecoration = (cellProps.underline) ? "underline" : "none";
+    cell.style.fontSize = (cellProps.fontSize)+"px";
+    cell.style.color = (cellProps.fontColor);
+    cell.style.backgroundColor = (cellProps.bgColor);
+    switch (cellProps.alignment) {
         case "left":
             cell.style.textAlign = "left";
             break;
@@ -104,7 +136,7 @@ function activeCellOperation(cell,rowId,colId){
         default:
             break;
     }
-    switch (currentValues.fontFamily) {
+    switch (cellProps.fontFamily) {
         case "font-1":
             cell.style.fontFamily = "'Courier New', Courier, monospace";
             break;
@@ -120,21 +152,19 @@ function activeCellOperation(cell,rowId,colId){
         default:
             break;
     }
-    // console.log("loading..");
 }
 
-function refreshPage(){
-    localStorage.setItem("storageDB",JSON.stringify(storageDB));
-    let freshData = localStorage.getItem("storageDB");
-    storageDB = JSON.parse(freshData);
+function textEditor(text,address){
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.text = text;
 }
 
-function changeActivityBtn(rid,cid){
-    let currVal = storageDB[rid][cid];
-    boldSelector.style.backgroundColor = (currVal.bold) ? activeBgColor : inActiveBgColor;
-    italicSelector.style.backgroundColor = (currVal.italic) ? activeBgColor : inActiveBgColor;
-    underlineSelector.style.backgroundColor = (currVal.underline) ? activeBgColor : inActiveBgColor;
-    switch (currVal.fontFamily){
+function changeActivityBtn(address){
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    boldSelector.style.backgroundColor = (cellProps.bold) ? activeBgColor : inActiveBgColor;
+    italicSelector.style.backgroundColor = (cellProps.italic) ? activeBgColor : inActiveBgColor;
+    underlineSelector.style.backgroundColor = (cellProps.underline) ? activeBgColor : inActiveBgColor;
+    switch (cellProps.fontFamily){
         case "font-1":
             fontFamilySelector.value = "font-1";
             break;
@@ -150,7 +180,7 @@ function changeActivityBtn(rid,cid){
         default:
             break;    
     }
-    switch (currVal.fontSize.toString()){
+    switch (cellProps.fontSize.toString()){
         case "12":
             fontSizeSelector.value = "12";
             break;
@@ -169,7 +199,7 @@ function changeActivityBtn(rid,cid){
         default:
             break;    
     }
-    switch (currVal.alignment) {
+    switch (cellProps.alignment) {
         case "left":
             leftAlign.style.backgroundColor = activeBgColor;
             justifyAlign.style.backgroundColor = inActiveBgColor;
@@ -188,120 +218,197 @@ function changeActivityBtn(rid,cid){
         default:
             break;
     }
-    textColor.parentNode.style.color = (currVal.fontColor=="transparent")?"black":currVal.fontColor;
-    bgColor.parentNode.style.color = (currVal.bgColor=="transparent")?"black":currVal.bgColor;
-    formulaBar.value = (currVal.formula);
+    textColor.parentNode.style.color = (cellProps.fontColor=="transparent")?"black":cellProps.fontColor;
+    bgColor.parentNode.style.color = (cellProps.bgColor=="transparent")?"black":cellProps.bgColor;
+    formulaBar.value = (cellProps.formula);
+}
+
+function implementFeaturesToCells(){
+    let cells = document.querySelectorAll('.col-cell>input');
+    cells.forEach((cell)=>{
+        cell.addEventListener('input',(e)=>{      
+            let address = addressBar.value;
+            let text = e.target.value;
+            textEditor(text,address);
+            updateChildren(address);
+            activeCellOperation(address);
+        });
+        cell.addEventListener('focus',(e)=>{
+            let address = addressBar.value;
+            changeActivityBtn(address);
+        });
+    });
+}
+
+function createSheetUI(promptText){
+    let sheets = document.querySelectorAll('.sheets>span');
+    let newSheet = document.createElement('span');
+    newSheet.setAttribute("id",`sheet-${Number(sheets[sheets.length-1].getAttribute("sheet-number"))+1}`);
+    newSheet.setAttribute("sheet-number",`${Number(sheets[sheets.length-1].getAttribute("sheet-number"))+1}`);
+    newSheet.setAttribute("class","sheet");
+    newSheet.innerText = promptText.replaceAll(" ","");
+    newSheet.addEventListener('click',()=>{activeSheet(newSheet)});
+    newSheet.addEventListener('contextmenu',(e)=>{ 
+        e.preventDefault();
+        if(confirm('Are really want to delete this sheet!')){
+            removeSheet(newSheet)
+        }
+    });
+    sheetsCont.appendChild(newSheet);
+    activeSheet(newSheet);
+}
+
+function activeSheet(sheet){
+    currentActiveSheet = Number(sheet.getAttribute("sheet-number"))-1;
+    currentSheetDB = storageDB[currentActiveSheet];
+    removeActiveSheet();
+    sheet.classList.add("sheet-active");
+    reloadSheet();
+}
+
+function removeActiveSheet(){
+    let sheets = document.querySelectorAll('.sheets>span');
+    sheets.forEach((sheet)=>{
+        if(sheet.classList.contains("sheet-active")){
+            sheet.classList.remove("sheet-active")
+        }
+    }); 
+}
+
+function removeSheet(sheet){
+    if(sheet.classList.contains('sheet-active')){
+        if(sheet.nextElementSibling){
+            activeSheet(sheet.nextElementSibling);
+            sheetsCont.removeChild(sheet);  
+        }else{
+            if(sheet.previousElementSibling){
+                activeSheet(sheet.previousElementSibling);
+                sheetsCont.removeChild(sheet);
+            }else{
+                alert("Atleast One Sheet Required!");
+            }
+        }
+    }else{
+        sheetsCont.removeChild(sheet);
+    }
+}
+
+function reloadSheet(){
+    let cells = document.querySelectorAll('.col-cell>input');
+    cells.forEach((cell)=>{
+        let rowId = Number(cell.getAttribute("rowId"));
+        let colId = Number(cell.getAttribute("colId"));
+        let address = String.fromCharCode(Number(65 + colId)).toUpperCase() + (rowId + 1);
+        activeCellOperation(address);
+    });
 }
 
 boldSelector.addEventListener('click',(e)=>{
-    boldValue = storageDB[rowId][colId];
-    boldValue.bold = !boldValue.bold;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.bold = !cellProps.bold;
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 italicSelector.addEventListener('click',(e)=>{
-    italicValue = storageDB[rowId][colId];
-    italicValue.italic = !italicValue.italic;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.italic = !cellProps.italic
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 underlineSelector.addEventListener('click',(e)=>{
-    ulValue = storageDB[rowId][colId];
-    ulValue.underline = !ulValue.underline;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.underline = !cellProps.underline
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 leftAlign.addEventListener('click',(e)=>{
-    alignValue = storageDB[rowId][colId];
-    alignValue.alignment = "left";
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.alignment = "left";
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 justifyAlign.addEventListener('click',(e)=>{
-    alignValue = storageDB[rowId][colId];
-    alignValue.alignment = "center";
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.alignment = "center";
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 rightAlign.addEventListener('click',(e)=>{
-    alignValue = storageDB[rowId][colId];
-    alignValue.alignment = "right";
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.alignment = "right";
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 fontColorSelector.addEventListener('input',(e)=>{
-    fontColorValue = storageDB[rowId][colId];
-    fontColorValue.fontColor = e.target.value;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.fontColor = e.target.value;
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 bgColorSelector.addEventListener('input',(e)=>{
-    bgColorValue = storageDB[rowId][colId];
-    bgColorValue.bgColor = e.target.value;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.bgColor = e.target.value;
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 fontSizeSelector.addEventListener('input',(e)=>{
-    fontSizeValue = storageDB[rowId][colId];
-    fontSizeValue.fontSize = e.target.value;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.fontSize = e.target.value;
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
 fontFamilySelector.addEventListener('input',(e)=>{
-    fontFamilyValue = storageDB[rowId][colId];
-    fontFamilyValue.fontFamily = e.target.value;
-    activeCellOperation(cellCont,rowId,colId);
-    changeActivityBtn(rowId,colId);
-    refreshPage();
+    let address = addressBar.value;
+    let [cell,cellProps] = getActiveCellAndProps(address);
+    cellProps.fontFamily = e.target.value;
+    activeCellOperation(address);
+    changeActivityBtn(address);
 });
 
-copySelector.addEventListener('click',()=>{
-    let copyText = cellCont.value;
-    navigator.clipboard.writeText(copyText);
-    console.log("Text is Copied!");
+addSheet.addEventListener('click',()=>{
+    let promptText = prompt("Enter Sheet Name..");
+    if(promptText){
+        let sheets = document.querySelectorAll('.sheets>span');
+        let lastSheet = sheets[sheets.length-1];
+        let currentSheet = Number(lastSheet.getAttribute("sheet-number"));
+        currentSheetDB = addNewSheetDB()[currentSheet];
+        createSheetUI(promptText);
+        clickFirstCell();
+    }
 });
 
-cutSelector.addEventListener('click',()=>{
-    let cutText = cellCont.value;
-    cellCont.value = "";
-    navigator.clipboard.writeText(cutText);
-    console.log("Text is Cut!");
-    textEditor("");
+sheet1.addEventListener('click',()=>{activeSheet(sheet1)});
+sheet1.addEventListener('contextmenu',(e)=>{ 
+    e.preventDefault();
+    if(confirm('Are really want to delete this sheet!')){
+        removeSheet(sheet1);
+    }
 });
 
-pasteSelector.addEventListener('click',async()=>{
-    let text = await navigator.clipboard.readText();
-    let fullText = cellCont.value + " " + text;
-    cellCont.value = fullText.trim();
-    console.log("Text is pasted!");
-    textEditor(cellCont.value.toString());
-});
-
-function getActiveCellAndProps(address){
-    let rowId = Number(address.slice(1))-1;
-    let colId = Number(address.charCodeAt(0))-65;
-    let cell = document.querySelector(`input[rowId="${rowId}"][colId="${colId}"]`)
-    let cellProps = storageDB[rowId][colId];
-    return [cell,cellProps];
-}
-
-let firstCell = document.querySelector('.col-cell>input');
-firstCell.focus();
+let cells = document.querySelectorAll('.col-cell>input');
+cells.forEach((cell)=>{
+    cell.addEventListener('blur',()=>{
+        storageDB[currentActiveSheet] = currentSheetDB;
+        storageDB = updateDatabase();
+        // console.log(storageDB);
+        // console.log(currentActiveSheet);
+    });
+})

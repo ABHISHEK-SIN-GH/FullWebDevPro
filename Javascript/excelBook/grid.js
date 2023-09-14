@@ -5,7 +5,7 @@ let addressBar = document.querySelector('#address-bar');
 let textColor = document.querySelector('.text-font-color');
 let bgColor = document.querySelector('.bg-font-color');
 
-let numRows = 99;
+let numRows = 100;
 let numCols = 26;
 
 textColor.addEventListener('input',(e)=>{
@@ -49,8 +49,7 @@ function addressSelector(cell,i,j){
     input.addEventListener('click',(e)=>{
         addressBar.value = (String.fromCharCode(65+j).toUpperCase() + (i+1));
     });
-    input.addEventListener('focus',(e)=>{
+    input.addEventListener('focus',(e)=>{ 
         addressBar.value = (String.fromCharCode(65+j).toUpperCase() + (i+1));
-        firstCell.focus
     });
 }
