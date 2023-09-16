@@ -53,6 +53,33 @@ body{
     background-color: black;
     z-index: 10;
 }
+.visual-cont{
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    z-index: 10;
+}
+.mic-icon{
+    color: black;
+    background-color: gray;
+    padding: 5px;
+    border-radius: 50%;
+    transform: scale(1.2);
+    opacity: 0.9;
+    position: absolute;
+}
+.visualizer{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
 .vid-cont{
     width: 100vw;
     height: 100vh;
@@ -86,7 +113,7 @@ body{
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    background-image: url('./image.jpg');
+    background-image: url('./image.png');
     background-size: 100% 100%;
     background-blend-mode: color-burn;
 }
