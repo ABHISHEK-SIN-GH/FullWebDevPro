@@ -3,9 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>Open Board</title>
 </head>
 <body>
-    <h1>Open Board</h1>
+    <canvas class="canvas"></canvas>
+    <div class="menu-icons">
+        <span class="material-symbols-outlined active-menu" id="menu">menu</span>
+        <span class="material-symbols-outlined inactive-menu" id="close">close</span>
+    </div>
+    <div class="menu-items">
+        <span class="material-symbols-outlined pencil-btn">edit</span>
+        <span class="material-symbols-outlined eraser-btn">ink_eraser</span>
+        <span class="material-symbols-outlined">refresh</span>
+        <span class="material-symbols-outlined">download</span>
+        <span class="material-symbols-outlined">upload_file</span>
+        <span class="material-symbols-outlined">undo</span>
+        <span class="material-symbols-outlined">redo</span>
+    </div>
+    <div class="sticky-note">
+        <span class="material-symbols-outlined sticky-note-btn">note_stack</span>
+    </div>
+    <div class="pencil-cont">
+        <div class="pencil-width-range">
+            <input type="range" max="10" min="2" value="5">
+        </div>
+        <div class="pencil-color-range">
+            <span class="black"></span>
+            <span class="red"></span>
+            <span class="green"></span>
+            <span class="blue"></span>
+        </div>
+    </div>
+    <div class="eraser-cont">
+        <div class="eraser-width-range">
+            <input type="range" max="10" min="2" value="5">
+        </div>
+    </div>
+    <div class="sticky-notes">
+        <div class="sticky-note-cont">
+            <div class="sticky-note-header">
+                <span class="green"></span>
+                <span class="red"></span>
+            </div>
+            <div class="sticky-note-content">
+                <textarea placeholder="Enter note here .."></textarea>
+            </div>
+        </div>
+    </div>
+    <script src="./index.js"></script>
 </body>
 </html>
