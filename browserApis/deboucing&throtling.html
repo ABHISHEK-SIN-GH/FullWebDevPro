@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T</title>
+</head>
+<body>
+    <input type="text" id="textInput">
+</body>
+<script>
+    let inpTxt = document.querySelector('#textInput');
+    let cnt = 1;
+    function work(){
+        console.log('network requested:',cnt++);
+    }
+    function debouncing(work,delay){
+        let timerID;
+        return function optnFn(){
+            clearTimeout(timerID);
+            timerID = setTimeout(()=>{
+                work();
+            },delay);
+        };
+    }
+    function throttling(work,delay){
+        let flag = true;
+        return function optnFn(){
+            if(flag){
+                work();
+                flag = false;
+                setTimeout(()=>{
+                    flag = true;
+                },delay);
+            }
+        };
+    }
+    // let opFn = debouncing(work,1000);
+    let opFn = throttling(work,3000);
+    inpTxt.addEventListener('input',()=>{
+        opFn();
+    });
+</script>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "fullwebdev",
+  "version": "1.0.0",
+  "description": "Welcome to the Web Development Course repository! This course is designed to help you master various aspects of web development, from JavaScript fundamentals to cloud computing. Whether you're a beginner or looking to expand your knowledge, you'll find valuable resources and projects here to enhance your skills.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ABHISHEK-SIN-GH/FullWebDevPro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ABHISHEK-SIN-GH/FullWebDevPro/issues"
+  },
+  "homepage": "https://github.com/ABHISHEK-SIN-GH/FullWebDevPro#readme",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "child_process": "^1.0.2",
+    "fetch": "^1.1.0",
+    "figlet": "^1.6.0",
+    "puppeteer": "^21.1.1",
+    "request": "^2.88.2"
+  }
+}
