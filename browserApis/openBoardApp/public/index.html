@@ -14,23 +14,23 @@
         <span class="material-symbols-outlined inactive-menu" id="close">close</span>
     </div>
     <div class="menu-items menu-animation active-menu">
-        <span class="material-symbols-outlined pencil-btn">edit</span>
+        <span class="material-symbols-outlined pencil-btn menu-item-active">edit</span>
         <span class="material-symbols-outlined eraser-btn">ink_eraser</span>
-        <span class="material-symbols-outlined">refresh</span>
-        <span class="material-symbols-outlined">download</span>
-        <span class="material-symbols-outlined">upload_file</span>
-        <span class="material-symbols-outlined">undo</span>
-        <span class="material-symbols-outlined">redo</span>
+        <span class="material-symbols-outlined refresh-btn">refresh</span>
+        <span class="material-symbols-outlined download-btn">download</span>
+        <span class="material-symbols-outlined upload-btn">upload_file</span>
+        <span class="material-symbols-outlined undo-btn">undo</span>
+        <span class="material-symbols-outlined redo-btn">redo</span>
     </div>
     <div class="sticky-note">
         <span class="material-symbols-outlined sticky-note-btn">note_stack</span>
     </div>
     <div class="pencil-cont">
         <div class="pencil-width-range">
-            <input type="range" max="10" min="2" value="5">
+            <input type="range" max="10" min="2" value="2" id="lineWidth">
         </div>
         <div class="pencil-color-range">
-            <span class="black"></span>
+            <span class="black active-color"></span>
             <span class="red"></span>
             <span class="green"></span>
             <span class="blue"></span>
@@ -38,10 +38,12 @@
     </div>
     <div class="eraser-cont">
         <div class="eraser-width-range">
-            <input type="range" max="10" min="2" value="5">
+            <input type="range" max="30" min="1" value="15" id="eraserWidth">
         </div>
     </div>
     <div class="sticky-notes"></div>
+    <input type="file" style="display: none;" id="fileNote" accept="image/*">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.js"></script>
     <script src="./index.js"></script>
 </body>
 </html>
