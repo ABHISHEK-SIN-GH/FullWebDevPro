@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Events</title>
+</head>
+<body>
+    <div style="relative: absolute; height: 150px; width: 150px; background-color: red;" id="div1">
+        <div style="position: absolute; height: 100px; width: 100px; background-color: green;" id="div2">
+            <div style="position: absolute; height: 50px; width: 50px; background-color: blue;" id="div3">
+            </div>
+        </div>
+    </div>
+    <script>
+        let div1 = document.querySelector('#div1');
+        let div2 = document.querySelector('#div2');
+        let div3 = document.querySelector('#div3');
+
+        div1.addEventListener('click',(e)=>{ 
+            e.stopPropagation();
+            console.log(e.target);
+            // console.log(e.eventPhase);
+            console.log(e.currentTarget);
+        });
+        
+        div2.addEventListener('click',(e)=>{
+            // e.stopPropagation();
+            console.log(e.target);
+            // console.log(e.eventPhase);
+            console.log(e.currentTarget);
+        });
+
+        div3.addEventListener('click',(e)=>{
+            // e.stopPropagation();
+            console.log(e.target);
+            // console.log(e.eventPhase);
+            console.log(e.currentTarget);
+        });
+
+    </script>
+</body>
+</html>
