@@ -1,10 +1,10 @@
 import React from 'react';
 import Rating from './Rating';
 
-const Movie = ({details}) => {
+const Movie = ({details,favFn}) => {
     return (
         <div className="col-md-3 col-12 p-2" id={details.id}>
-            <div className='card mb-4'>
+            <div className='card mb-4 position-relative'>
                 <img src={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`} className="card-img-top" alt=""/>
                 <div className="card-body">
                     {
@@ -22,6 +22,7 @@ const Movie = ({details}) => {
                     }
                     <Rating key={details.id} id={details.id} avgRating={details.vote_average} totalRatings={details.vote_count}/>
                 </div>
+            <button className='position-absolute top-0 end-0 btn btn-light text-danger me-2 mt-2' onClick={()=>{favFn(details)}}><i className="bi bi-heart-fill"></i></button>
             </div>
         </div>
     );

@@ -8,15 +8,17 @@ import axios from 'axios';
 import Spinner from './Components/Spinner';
 function App() {
   
+  const [loader, setLoader] = useState(false);
   const [page, setPage] = useState(0);
   const [data, setData] = useState([]);
+  const [fav, setFav] = useState(JSON.parse(localStorage.getItem("favorites")));
   
   useEffect(() => {
     dataHandle(1);
-    // console.log('use effect called');
   }, [page]);
 
   const dataHandle = (page) => {
+    setLoader(true);
     const config = {
         url : `https://api.themoviedb.org/3/trending/all/week?language=en-US&page=${(page===0)?1:page}`,
         method: 'GET',
@@ -28,14 +30,13 @@ function App() {
     axios(config).then((res)=>{
         let data = res.data;
         setData(data);
-        // console.log("Data received successfully!");
+        setLoader(false);
     }).catch((err)=>{
-        // console.log("Something went wrong!");
+        console.log("Something went wrong!");
     });  
   } 
   
   const handlePagination = (page) => {
-    // console.log(page);
     dataHandle(page);
   } 
   
@@ -47,11 +48,19 @@ function App() {
     }
   }
 
+  const handleFavPush = async (data) => {
+    setFav([...fav,data]);
+  }
+
+  useEffect(() => {
+    localStorage.setItem("favorites",JSON.stringify([...fav]));
+  }, [fav]);
+
   return (
     <div>
       <Navbar/>
       <Banner/>
-      {(data.length!==0)?<Movies data={data}/>:<Spinner/>}
+      {(data.length!==0 && loader===false)?<Movies data={data} favFn={handleFavPush}/>:<Spinner/>}
       <Footer currentPage={page} handleCounter={handleCounter} handlePagination={handlePagination}/>
     </div>
   );
