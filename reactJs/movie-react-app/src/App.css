@@ -1,0 +1,9 @@
+*{
+    box-sizing: border-box!important;
+}
+.page-link{
+    background-color: #6c757d;
+    color: white;
+    width: 60px;
+    text-align: center;
+}
