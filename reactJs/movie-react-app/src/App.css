@@ -22,3 +22,9 @@ body {
     margin-left: 0!important;
 }
 
+.sideNavGen:hover{
+    background-color: #6c757d;
+    opacity: 0.6;
+    color: white;
+    cursor: pointer;
+}

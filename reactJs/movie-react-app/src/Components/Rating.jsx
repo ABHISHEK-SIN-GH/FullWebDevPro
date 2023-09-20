@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Rating = ({avgRating,totalRatings,id}) => {
-    const avgRate = Math.round(avgRating*10)/20;
+const Rating = ({avgRating}) => {
+    const avgRate = Math.round((avgRating/2)*10)/10;
     let stars = [];
     const emptyStar = (cnt) => <i className="bi bi-star me-1 m-0 pb-1 my-auto" style={{alignSelf:'center'}} key={cnt}></i>;
     const halfStar = (cnt) => <i className="bi bi-star-half me-1 m-0 pb-1 my-auto" style={{alignSelf:'center'}} key={cnt}></i>;
@@ -22,7 +22,7 @@ const Rating = ({avgRating,totalRatings,id}) => {
         cnt++;
     }
     return (
-        <div key={actualRating} className="btn btn-secondary w-100 mt-3 d-flex align-content-center justify-content-center">
+        <div key={actualRating} className="btn btn-secondary w-100 d-flex align-content-center justify-content-center">
             <span className='me-2 my-auto'>Rating:</span>
             {stars}
             <span className='ms-2 rounded bg-white text-secondary my-auto px-2'>{avgRate}/5</span>

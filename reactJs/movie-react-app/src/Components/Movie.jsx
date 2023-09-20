@@ -1,7 +1,14 @@
 import React from 'react';
 import Rating from './Rating';
 
-const Movie = ({details,favFn}) => {
+const Movie = ({details,favFn,favList}) => {
+    let fav = false;
+    let data = favList.filter((fm)=>{return fm.id===details.id});
+    if(data.length>0){
+        fav = true;
+    }else{
+        fav = false;
+    }
     return (
         <div className="col-md-3 col-12 p-2" id={details.id}>
             <div className='card mb-4 position-relative'>
@@ -20,9 +27,10 @@ const Movie = ({details,favFn}) => {
                         :
                             <span>Release Date: <span className='badge rounded-pill text-bg-secondary'>{details.first_air_date}</span></span>
                     }
-                    <Rating key={details.id} id={details.id} avgRating={details.vote_average} totalRatings={details.vote_count}/>
+                    <span className='m-3 d-block'></span>
+                    <Rating key={details.id} avgRating={details.vote_average}/>
                 </div>
-            <button className='position-absolute top-0 end-0 btn btn-light text-danger me-2 mt-2' onClick={()=>{favFn(details)}}><i className="bi bi-heart-fill"></i></button>
+            <button className={`position-absolute top-0 end-0 btn ${(!fav)?'btn-light text-danger':'btn-danger text-light'} me-2 mt-2`} onClick={()=>{favFn(details)}}><i className="bi bi-heart-fill"></i></button>
             </div>
         </div>
     );
