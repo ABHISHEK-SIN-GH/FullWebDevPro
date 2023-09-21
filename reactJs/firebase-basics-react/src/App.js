@@ -2,6 +2,10 @@ import React, {useState,useEffect} from 'react';
 import './App.css';
 import { firebaseApp } from './firebase';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import DatabaseCRUD from './DatabaseCRUD';
+import StorageFB from './StorageFB';
+
+// firebase-react-app // captcha
 
 function App() {
   const [email, setEmail] = useState('');
@@ -37,7 +41,9 @@ function App() {
       :
         <>
           <h1>Signed In Successfully {user.uid}</h1>
-          <button onClick={()=>{signOutUser()}}>Logout</button> 
+          <DatabaseCRUD/>
+          <StorageFB/>
+          <button style={{marginTop:"40px"}} onClick={()=>{signOutUser()}}>Logout</button> 
         </>
       }
     </div>
