@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app"/>
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // lession - 3
+      
+      const objectX = {
+        a:"abhishek",
+        b: this
+      }
+      
+      const objectFn = {
+        a:"abhishek",
+        b: objFn
+      }
+      
+      function objFn(){
+        console.log(this);
+        function nesFn(){
+          console.log(this);
+        } // Global
+        // const nesFn = () => {
+        //   console.log(this);
+        // } // Parent
+        // nesFn();
+        let bindFn = nesFn.bind(this);
+        bindFn();
+      }
+      // console.log(this);
+      // console.log(objectX.b);
+      // objFn();
+      // objectFn.b();
+
+      const objZ = {
+        a : {x:this},
+        fn : function(){
+          function xyz(){
+            console.log(this);
+          }
+          xyz();
+          console.log(this);
+        }
+      }
+
+      // objZ.fn();
+      // console.log(objZ.a);
+      // console.log(objZ.a.x);
+    </script>
+  </body>
+</html>
